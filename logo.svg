@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60">
+  <defs>
+    <linearGradient id="truckRed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF4D5D" />
+      <stop offset="100%" stop-color="#E51A2D" />
+    </linearGradient>
+  </defs>
+  <!-- Stylized Truck Icon -->
+  <g transform="translate(10, 5)">
+    <!-- Cabin Base -->
+    <path d="M 5,35 L 35,35 L 35,15 L 25,15 L 15,22 L 5,22 Z" fill="url(#truckRed)" />
+    <!-- Sleeper Cabin extension -->
+    <path d="M 35,35 L 50,35 L 50,10 L 35,10 Z" fill="#E51A2D" />
+    <!-- Wheels -->
+    <circle cx="15" cy="38" r="5" fill="#FFFFFF" />
+    <circle cx="15" cy="38" r="2" fill="#0C0D12" />
+    <circle cx="42" cy="38" r="5" fill="#FFFFFF" />
+    <circle cx="42" cy="38" r="2" fill="#0C0D12" />
+    <!-- Windshield -->
+    <path d="M 18,24 L 24,18 L 32,18 L 32,24 Z" fill="#0C0D12" />
+    <!-- Grill/Bumper -->
+    <rect x="3" y="26" width="3" height="8" fill="#FFFFFF" rx="1" />
+  </g>
+  
+  <!-- Text Elements -->
+  <text x="75" y="28" font-family="'Inter', 'Outfit', sans-serif" font-weight="900" font-size="20" fill="#E51A2D" letter-spacing="1">TRUCKER</text>
+  <text x="75" y="46" font-family="'Inter', 'Outfit', sans-serif" font-weight="600" font-size="14" fill="#FFFFFF" letter-spacing="4">SOCIAL</text>
+</svg>
