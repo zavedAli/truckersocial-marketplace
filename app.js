@@ -695,6 +695,22 @@ document.addEventListener("DOMContentLoaded", () => {
   bindStaticEvents();
 });
 
+// Category icon map — one SVG path per category id
+const CATEGORY_ICONS = {
+  "01": `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>`,
+  "02": `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 4H3C1.9 4 1 4.9 1 6v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h8c0 1.66 1.34 3 3 3s3-1.34 3-3h2V9l-6-5zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM16.5 7l3.74 4H13V7h3.5zm1.5 11.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>`,
+  "03": `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 6c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v9h2V7h14v8h2V6zM1 19h22v2H1zm11.5-7.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5S14 13.83 14 13s-.67-1.5-1.5-1.5zM9 17H7v-5H5v-2h4v7zm8 0h-6v-7h4v2h-2v5h4v-7h2v7z"/></svg>`,
+  "04": `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/></svg>`,
+  "05": `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 3L5 6.99h3V14h2V6.99h3L9 3zm7 14.01V10h-2v7.01h-3L15 21l4-3.99h-3z"/><path d="M17 12h2V7h-5v2h3v3z" opacity=".3"/><path d="M17 12V9h-3V7h5v5h-2zm-4-2V8H8v4H6v3h2v1h4v-1h2v-3h-1zm-4 4v-3h2v3H9zm0-5h2v1H9V9z" opacity=".0"/><rect x="3" y="11" width="3" height="2" rx="1"/><rect x="18" y="11" width="3" height="2" rx="1"/><rect x="11" y="3" width="2" height="3" rx="1"/><rect x="11" y="18" width="2" height="3" rx="1"/><circle cx="12" cy="12" r="3"/></svg>`,
+  "06": `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1C7.03 1 3 5.03 3 10c0 2.99 1.46 5.63 3.7 7.28L5 19h14l-1.7-1.72C19.54 15.63 21 12.99 21 10c0-4.97-4.03-9-9-9zm0 14c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm3.5-5h-3V7.5h-1V11H8.5v1h3v3.5h1V12h3.5v-2z"/></svg>`,
+  "07": `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-2.18c.07-.44.18-.88.18-1.34C18 2.54 15.8.34 13.1.34c-1.22 0-2.36.44-3.24 1.18L12 3.67l2.14-2.15A3.07 3.07 0 0113.1 1.5C15.02 1.5 16.6 3.08 16.6 5c0 .35-.08.69-.16 1H12v1.5h8c.55 0 1 .45 1 1v9c0 .55-.45 1-1 1H4c-.55 0-1-.45-1-1V8.5c0-.55.45-1 1-1h3v-1H4c-1.1 0-2 .9-2 2V17c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8.5c0-1.1-.9-1.5-2-1.5z"/><path d="M9 12H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>`,
+  "08": `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>`,
+  "09": `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 2.1L11.07 6.53l2.83 2.83 1.4-1.41.71.71-5.31 5.3-2.12-2.12-4.24 4.24 1.41 1.41 2.83-2.82 2.12 2.12 6.72-6.72.7.71-1.41 1.41 2.83 2.83 4.43-4.43-8.01-7.97z"/><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm17.71-10.21c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>`,
+  "10": `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>`,
+  "11": `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-2.18c.07-.44.18-.88.18-1.34C18 2.54 15.8.34 13.1.34c-1.22 0-2.36.44-3.24 1.18L12 3.67l2.14-2.15A3.07 3.07 0 0113.1 1.5C15.02 1.5 16.6 3.08 16.6 5c0 .35-.08.69-.16 1H12v1.5h8c.55 0 1 .45 1 1v9c0 .55-.45 1-1 1H4c-.55 0-1-.45-1-1V8.5c0-.55.45-1 1-1h3v-1H4c-1.1 0-2 .9-2 2V17c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8.5c0-1.1-.9-1.5-2-1.5zM9 15H7v-4H5v-1h4v5zm4 0h-2V9h2v6zm4 0h-4v-1h1.5v-3H13V9h4v1h-1.5v3H17v2z"/></svg>`,
+  "12": `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93V18h-2v1.93C7.06 19.48 4.52 16.94 4.07 14H6v-2H4.07C4.52 9.06 7.06 6.52 10 6.07V8h2V6.07c2.94.45 5.48 2.99 5.93 5.93H16v2h1.93c-.45 2.94-2.99 5.48-5.93 5.93z"/></svg>`
+};
+
 // 5. Render parent category grid
 function renderCategoriesGrid() {
   const grid = document.getElementById("categories-grid");
@@ -703,7 +719,7 @@ function renderCategoriesGrid() {
   grid.innerHTML = CATEGORIES.map(cat => {
     return `
       <div class="category-card" id="cat-card-${cat.id}" onclick="selectCategory('${cat.id}')">
-        <div class="category-num">${cat.id}</div>
+        <div class="category-icon">${CATEGORY_ICONS[cat.id] || ""}</div>
         <div class="category-name">${cat.name}</div>
         <div class="category-meta">
           <span class="meta-badge">${cat.subcategories.length} Subs</span>
@@ -713,6 +729,7 @@ function renderCategoriesGrid() {
     `;
   }).join("");
 }
+
 
 // 6. Bind UI control toggles and profile actions
 function bindStaticEvents() {

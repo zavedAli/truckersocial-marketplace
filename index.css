@@ -353,16 +353,29 @@ body {
   background-color: var(--accent-red);
 }
 
-.category-num {
-  font-family: var(--font-title);
-  font-size: 24px;
-  font-weight: 800;
+.category-icon {
+  width: 36px;
+  height: 36px;
+  margin-bottom: 10px;
   color: var(--text-muted);
-  line-height: 1;
-  margin-bottom: 8px;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.category-card.active .category-num {
+.category-icon svg {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
+}
+
+.category-card:hover .category-icon {
+  color: var(--text-secondary);
+  transform: scale(1.08);
+}
+
+.category-card.active .category-icon {
   color: var(--accent-red);
 }
 
