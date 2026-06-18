@@ -379,7 +379,8 @@ const MOCK_LISTINGS = [
     titleStatus: "Clean",
     location: { state: "TX", zip: "75201", radius: "50" },
     financing: "yes",
-    condition: "Used"
+    condition: "Used",
+    imageUrl: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=600&auto=format&fit=crop"
   },
   {
     id: "lst-002",
@@ -402,7 +403,8 @@ const MOCK_LISTINGS = [
     titleStatus: "Clean",
     location: { state: "CA", zip: "90210", radius: "100" },
     financing: "yes",
-    condition: "Used"
+    condition: "Used",
+    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=600&auto=format&fit=crop"
   },
   {
     id: "lst-003",
@@ -425,7 +427,8 @@ const MOCK_LISTINGS = [
     titleStatus: "Clean",
     location: { state: "OH", zip: "43215", radius: "250" },
     financing: "no",
-    condition: "Used"
+    condition: "Used",
+    imageUrl: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=600&auto=format&fit=crop"
   },
 
   // Trailers
@@ -447,7 +450,8 @@ const MOCK_LISTINGS = [
     landingGear: "yes",
     location: { state: "FL", zip: "33101", radius: "100" },
     financing: "yes",
-    condition: "Used"
+    condition: "Used",
+    imageUrl: "https://images.unsplash.com/photo-1519003722824-194d4455a60c?q=80&w=600&auto=format&fit=crop"
   },
   {
     id: "lst-005",
@@ -467,7 +471,8 @@ const MOCK_LISTINGS = [
     landingGear: "yes",
     location: { state: "GA", zip: "30301", radius: "25" },
     financing: "yes",
-    condition: "New"
+    condition: "New",
+    imageUrl: "https://images.unsplash.com/photo-1601489196285-7a7de2ab25db?q=80&w=600&auto=format&fit=crop"
   },
 
   // Yard & Warehouse Equipment
@@ -487,7 +492,8 @@ const MOCK_LISTINGS = [
     hours: 3200,
     location: { state: "IL", zip: "60601", radius: "50" },
     financing: "no",
-    condition: "Used"
+    condition: "Used",
+    imageUrl: "https://images.unsplash.com/photo-1504222490345-c075b626f31b?q=80&w=600&auto=format&fit=crop"
   },
   {
     id: "lst-007",
@@ -504,7 +510,8 @@ const MOCK_LISTINGS = [
     hours: 1200,
     location: { state: "PA", zip: "19103", radius: "100" },
     financing: "no",
-    condition: "Used"
+    condition: "Used",
+    imageUrl: "https://images.unsplash.com/photo-1519677100203-a0e668c92439?q=80&w=600&auto=format&fit=crop"
   },
 
   // Parts
@@ -523,7 +530,8 @@ const MOCK_LISTINGS = [
     warranty: "yes",
     location: { state: "NC", zip: "27201", radius: "250" },
     financing: "yes",
-    condition: "Rebuilt"
+    condition: "Rebuilt",
+    imageUrl: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=600&auto=format&fit=crop"
   },
 
   // Electronics & Technology
@@ -541,7 +549,8 @@ const MOCK_LISTINGS = [
     warranty: "no",
     location: { state: "MI", zip: "48201", radius: "25" },
     financing: "no",
-    condition: "Used"
+    condition: "Used",
+    imageUrl: "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?q=80&w=600&auto=format&fit=crop"
   },
 
   // Services
@@ -557,7 +566,8 @@ const MOCK_LISTINGS = [
     businessType: "Company",
     yearsInBusiness: "5–10 years",
     freeConsult: "yes",
-    rating: "4.5+ stars"
+    rating: "4.5+ stars",
+    imageUrl: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=600&auto=format&fit=crop"
   },
 
   // Freight & Loads
@@ -578,7 +588,8 @@ const MOCK_LISTINGS = [
     weight: "30K–45K",
     hazmat: "yes",
     teamRequired: "no",
-    postedWithin: "Last 24 hours"
+    postedWithin: "Last 24 hours",
+    imageUrl: "https://images.unsplash.com/photo-1601489196285-7a7de2ab25db?q=80&w=600&auto=format&fit=crop"
   },
 
   // Real Estate & Parking
@@ -599,7 +610,8 @@ const MOCK_LISTINGS = [
     spaces: "50+ spots",
     utilities: "no",
     availableDate: "Immediately",
-    financing: "no"
+    financing: "no",
+    imageUrl: "https://images.unsplash.com/photo-1590674899484-d5640e854abe?q=80&w=600&auto=format&fit=crop"
   },
 
   // Tools & Supplies
@@ -616,7 +628,8 @@ const MOCK_LISTINGS = [
     brand: "SmartRoute",
     subscription: "yes",
     fleetSize: "Small Fleet (3–10)",
-    financing: "no"
+    financing: "no",
+    imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop"
   },
 
   // Rental & Leasing
@@ -638,7 +651,8 @@ const MOCK_LISTINGS = [
     cdlRequired: "yes",
     location: { state: "TX", zip: "75201", radius: "100" },
     financing: "yes",
-    condition: "Used"
+    condition: "Used",
+    imageUrl: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=600&auto=format&fit=crop"
   },
 
   // Business for Sale
@@ -658,7 +672,8 @@ const MOCK_LISTINGS = [
     region: ["Northeast", "Midwest"],
     employees: "yes",
     reasonSelling: "Retirement",
-    financing: "yes"
+    financing: "yes",
+    imageUrl: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=600&auto=format&fit=crop"
   },
 
   // Miscellaneous
@@ -672,7 +687,8 @@ const MOCK_LISTINGS = [
     priceRange: "$25–$100",
     miscItemType: "Apparel",
     location: { state: "TX", zip: "75201", radius: "25" },
-    condition: "New"
+    condition: "New",
+    imageUrl: "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=600&auto=format&fit=crop"
   }
 ];
 
@@ -698,6 +714,7 @@ let appState = {
       condition: "Used",
       status: "active",
       location: { state: "TX", zip: "75201", radius: "50" },
+      imageUrl: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=600&auto=format&fit=crop",
       specs: [
         { l: "Make", v: "Peterbilt" },
         { l: "Year", v: "2018" },
@@ -716,6 +733,7 @@ let appState = {
       condition: "Used",
       status: "draft",
       location: { state: "GA", zip: "30301", radius: "25" },
+      imageUrl: "https://images.unsplash.com/photo-1578844251758-2f71da64c96f?q=80&w=600&auto=format&fit=crop",
       specs: [
         { l: "Part Category", v: "Tires & Wheels" },
         { l: "Compatible With", v: "Truck" },
@@ -820,6 +838,7 @@ function bindStaticEvents() {
       condition: appState.form.condition || "Used",
       status: appState.form.status || "active",
       location: appState.form.location || { state: "TX" },
+      imageUrl: appState.form.imageUrl || "",
       specs: []
     };
 
@@ -1049,6 +1068,17 @@ function renderFieldsPanel() {
       <div class="form-group">
         <label for="form-input-price">Price ($) <span class="label-note">(Required)</span></label>
         <input type="number" id="form-input-price" class="form-control" placeholder="e.g. 45000" oninput="handleFormBaseChange('price', this.value)" value="${appState.form.price || ''}" required>
+      </div>
+      <div class="form-group form-group-full">
+        <label for="form-input-image">Listing Image <span class="label-note">(Paste URL or Upload File)</span></label>
+        <div style="display: flex; gap: 10px;">
+          <input type="text" id="form-input-image" class="form-control" placeholder="e.g. https://images.unsplash.com/... or upload a file" oninput="handleFormBaseChange('imageUrl', this.value)" value="${appState.form.imageUrl || ''}">
+          <label class="btn btn-secondary" style="margin: 0; padding: 11px 16px; cursor: pointer; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 13.5px; height: 43px;">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
+            Upload
+            <input type="file" id="form-file-image" accept="image/*" style="display: none;" onchange="handleImageUpload(this)">
+          </label>
+        </div>
       </div>
     `;
   }
@@ -1598,9 +1628,12 @@ function updateLivePreview() {
           <span class="preview-mode-tag" style="background-color: var(--accent-red-glow); color: var(--accent-red); border-color: var(--accent-red);">Draft Mode</span>
         </div>
         <div class="live-card">
-          <div class="card-img-placeholder">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
-            <div style="font-size: 11px;">Listing Image Upload</div>
+          <div class="card-img-placeholder" style="height: 160px; position: relative;">
+            ${appState.form.imageUrl 
+              ? `<img src="${appState.form.imageUrl}" style="width: 100%; height: 100%; object-fit: cover;">` 
+              : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>
+                 <div style="font-size: 11px;">Listing Image Upload</div>`
+            }
             <div class="card-badges">
               ${appState.form.financing === 'yes' ? '<span class="card-badge-left">FINANCING</span>' : '<span></span>'}
               ${isPhysicalGoods ? `<span class="card-badge-right">${condText}</span>` : ''}
@@ -1634,6 +1667,7 @@ const SAMPLE_MP_LISTINGS = [
     title: "2018 Freightliner Cascadia Sleeper",
     desc: "Detroit DD15 engine, DT12 AMT. Clean title, fleet-maintained. Super clean cab, 72\" sleeper.",
     price: 45000, condition: "Used", financing: true,
+    imageUrl: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=600&auto=format&fit=crop",
     specs: [{l:"Make",v:"Freightliner"},{l:"Year",v:"2018"},{l:"Engine",v:"Detroit DD15"},{l:"Mileage",v:"500K–750K"}],
     location: "Dallas, TX"
   },
@@ -1642,6 +1676,7 @@ const SAMPLE_MP_LISTINGS = [
     title: "2021 Peterbilt 389 Day Cab – Heavy Haul",
     desc: "Cummins X15 565HP, 18-speed manual. Custom chrome, ready for heavy haul work.",
     price: 135000, condition: "Used", financing: true,
+    imageUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=600&auto=format&fit=crop",
     specs: [{l:"Make",v:"Peterbilt"},{l:"Year",v:"2021"},{l:"Engine",v:"Cummins X15"},{l:"Miles",v:"Under 250K"}],
     location: "Los Angeles, CA"
   },
@@ -1650,6 +1685,7 @@ const SAMPLE_MP_LISTINGS = [
     title: "2015 Kenworth T880 Tri-Axle Dump Truck",
     desc: "PACCAR MX-13 engine, Allison Automatic. 16ft steel dump bed, heavy duty construction spec.",
     price: 89000, condition: "Used", financing: false,
+    imageUrl: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=600&auto=format&fit=crop",
     specs: [{l:"Make",v:"Kenworth"},{l:"Year",v:"2015"},{l:"Engine",v:"PACCAR MX-13"},{l:"Axles",v:"Tri-Axle"}],
     location: "Columbus, OH"
   },
@@ -1658,6 +1694,7 @@ const SAMPLE_MP_LISTINGS = [
     title: "2020 Great Dane 53' Reefer Trailer",
     desc: "Thermo King Precedent S-600 unit, low hours. Aluminum duct floor, tandem slider axle.",
     price: 49000, condition: "Used", financing: true,
+    imageUrl: "https://images.unsplash.com/photo-1519003722824-194d4455a60c?q=80&w=600&auto=format&fit=crop",
     specs: [{l:"Make",v:"Great Dane"},{l:"Length",v:"53'"},{l:"Reefer",v:"Thermo King"},{l:"Axles",v:"Tandem"}],
     location: "Miami, FL"
   },
@@ -1666,6 +1703,7 @@ const SAMPLE_MP_LISTINGS = [
     title: "2026 Utility Combo 53ft Spread-Axle Flatbed",
     desc: "Brand new 2026 flatbed, wood floor with aluminum nailer, spread axle, tool boxes included.",
     price: 78000, condition: "New", financing: true,
+    imageUrl: "https://images.unsplash.com/photo-1601489196285-7a7de2ab25db?q=80&w=600&auto=format&fit=crop",
     specs: [{l:"Make",v:"Utility"},{l:"Year",v:"2026"},{l:"Length",v:"53'"},{l:"Floor",v:"Wood"}],
     location: "Atlanta, GA"
   },
@@ -1674,6 +1712,7 @@ const SAMPLE_MP_LISTINGS = [
     title: "2019 Volvo VNL760 Lease-to-Own Program",
     desc: "No credit check, low down payment. $750/week, 36-month term with buyout option.",
     price: 750, condition: "Used", financing: true,
+    imageUrl: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=600&auto=format&fit=crop",
     specs: [{l:"Make",v:"Volvo"},{l:"Year",v:"2019"},{l:"Rate",v:"$750/wk"},{l:"Term",v:"36 months"}],
     location: "Dallas, TX",
     priceLabel: "/week"
@@ -1683,6 +1722,7 @@ const SAMPLE_MP_LISTINGS = [
     title: "Premium 5% Dispatch Service – No Contracts",
     desc: "We negotiate top rates, handle setup packets, and process factoring invoices. Dedicated dispatcher.",
     price: 0, condition: null, financing: false,
+    imageUrl: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=600&auto=format&fit=crop",
     specs: [{l:"Type",v:"Dispatch"},{l:"Coverage",v:"Nationwide"},{l:"Rate",v:"5%"},{l:"Contract",v:"None"}],
     location: "Nationwide"
   },
@@ -1691,6 +1731,7 @@ const SAMPLE_MP_LISTINGS = [
     title: "Remanufactured Cummins X15 Cylinder Head",
     desc: "Fully loaded cylinder head, valves ground, pressure checked. 12-month warranty included.",
     price: 2450, condition: "Rebuilt", financing: false,
+    imageUrl: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=600&auto=format&fit=crop",
     specs: [{l:"Condition",v:"Rebuilt"},{l:"OEM",v:"Remanufactured"},{l:"Warranty",v:"12 mo"},{l:"Fits",v:"Kenworth/Pete"}],
     location: "Charlotte, NC"
   },
@@ -1699,6 +1740,7 @@ const SAMPLE_MP_LISTINGS = [
     title: "Secure Truck Parking in Dallas – Fenced & Gated",
     desc: "24/7 access, guard on duty, bright LED lighting. Monthly and daily spaces available.",
     price: 150, condition: null, financing: false,
+    imageUrl: "https://images.unsplash.com/photo-1590674899484-d5640e854abe?q=80&w=600&auto=format&fit=crop",
     specs: [{l:"Type",v:"Parking"},{l:"Security",v:"Fenced/Gated"},{l:"Spots",v:"50+"},{l:"Access",v:"24/7"}],
     location: "Dallas, TX",
     priceLabel: "/month"
@@ -1708,6 +1750,7 @@ const SAMPLE_MP_LISTINGS = [
     title: "Garmin dēzl OTR700 Truck GPS Navigator",
     desc: "7\" high-res screen, custom routing by truck size & weight. Like new in original box.",
     price: 299, condition: "Used", financing: false,
+    imageUrl: "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?q=80&w=600&auto=format&fit=crop",
     specs: [{l:"Brand",v:"Garmin"},{l:"Screen",v:"7\""},{l:"Type",v:"GPS"},{l:"Sub Required",v:"No"}],
     location: "Detroit, MI"
   },
@@ -1716,6 +1759,7 @@ const SAMPLE_MP_LISTINGS = [
     title: "Active 5-Truck Carrier Business for Sale",
     desc: "Includes clean MC/DOT authority, 5 operating sleepers & CDL drivers. Profitable route contracts.",
     price: 380000, condition: null, financing: true,
+    imageUrl: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=600&auto=format&fit=crop",
     specs: [{l:"Trucks",v:"5"},{l:"Auth Age",v:"5+ years"},{l:"Safety",v:"Satisfactory"},{l:"Revenue",v:"$500K–$2M"}],
     location: "Northeast US"
   },
@@ -1724,6 +1768,7 @@ const SAMPLE_MP_LISTINGS = [
     title: "Toyota 5,000 lbs Pneumatic Forklift",
     desc: "Model 8FGU25, LP Gas. 3-stage mast, side shifter, great tires and work lights. Low hours.",
     price: 16500, condition: "Used", financing: false,
+    imageUrl: "https://images.unsplash.com/photo-1504222490345-c075b626f31b?q=80&w=600&auto=format&fit=crop",
     specs: [{l:"Brand",v:"Toyota"},{l:"Capacity",v:"5,000 lbs"},{l:"Fuel",v:"Propane"},{l:"Hours",v:"3,200"}],
     location: "Chicago, IL"
   }
@@ -1762,7 +1807,8 @@ function renderMarketplaceCards() {
     condition: item.condition || null,
     financing: item.financing === "yes",
     specs: [],
-    location: item.location ? (item.location.state || "") : ""
+    location: item.location ? (item.location.state || "") : "",
+    imageUrl: item.imageUrl || ""
   }));
 
   // Merge, deduplicating by id
@@ -1823,12 +1869,15 @@ function renderMpCard(item) {
   return `
     <div class="mp-card" id="mp-card-${item.id}">
       <div class="mp-card-img">
-        <div class="mp-card-img-inner">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125a1.125 1.125 0 001.125-1.125V9.75M8.25 18.75a1.5 1.5 0 01-3 0m0 0V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25v11.25" />
-          </svg>
-          <span>${item.cat}</span>
-        </div>
+        ${item.imageUrl 
+          ? `<img src="${item.imageUrl}" style="width: 100%; height: 100%; object-fit: cover;">`
+          : `<div class="mp-card-img-inner">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125a1.125 1.125 0 001.125-1.125V9.75M8.25 18.75a1.5 1.5 0 01-3 0m0 0V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25v11.25" />
+              </svg>
+              <span>${item.cat}</span>
+            </div>`
+        }
         <div class="mp-card-badges">
           ${item.financing ? '<span class="mp-badge-financing">Financing</span>' : '<span></span>'}
           ${item.condition ? `<span class="mp-badge-condition${condClass}">${item.condition}</span>` : '<span></span>'}
@@ -2029,12 +2078,15 @@ function renderMyListingCard(item) {
   return `
     <div class="mp-card my-listing-card" id="my-listing-card-${item.id}">
       <div class="mp-card-img">
-        <div class="mp-card-img-inner">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125a1.125 1.125 0 001.125-1.125V9.75M8.25 18.75a1.5 1.5 0 01-3 0m0 0V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25v11.25" />
-          </svg>
-          <span>${catName}</span>
-        </div>
+        ${item.imageUrl 
+          ? `<img src="${item.imageUrl}" style="width: 100%; height: 100%; object-fit: cover;">`
+          : `<div class="mp-card-img-inner">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125a1.125 1.125 0 001.125-1.125V9.75M8.25 18.75a1.5 1.5 0 01-3 0m0 0V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25v11.25" />
+              </svg>
+              <span>${catName}</span>
+            </div>`
+        }
         <div class="mp-card-badges">
           <span class="my-listing-status ${statusClass}">${statusLabel}</span>
           ${item.condition ? `<span class="mp-badge-condition ${condClass}">${item.condition}</span>` : '<span></span>'}
@@ -2143,6 +2195,24 @@ window.showToast = function(message) {
       toast.remove();
     }, 300);
   }, 4000);
+};
+
+// Handle file upload selection for images
+window.handleImageUpload = function(input) {
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      appState.form.imageUrl = e.target.result;
+      const urlInput = document.getElementById("form-input-image");
+      if (urlInput) {
+        urlInput.value = "";
+        urlInput.placeholder = `Uploaded file: ${file.name}`;
+      }
+      updateLivePreview();
+    };
+    reader.readAsDataURL(file);
+  }
 };
 
 
