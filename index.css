@@ -1830,3 +1830,269 @@ textarea.form-control {
   .mp-cards-list .mp-card-img { width: 100%; min-height: 140px; border-right: none; border-bottom: 1px solid var(--border-color); }
 }
 
+/* =========================================
+   MY MARKETPLACE MODE
+========================================= */
+.my-marketplace-area {
+  flex: 1;
+  padding: 28px 40px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.my-market-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.my-market-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.my-market-title {
+  font-family: var(--font-title);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+}
+
+.my-market-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.btn-post-new {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--accent-red) 0%, #c41325 100%);
+  color: #fff;
+  border: none;
+  padding: 11px 22px;
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 16px rgba(229, 26, 45, 0.3);
+  flex-shrink: 0;
+}
+
+.btn-post-new:hover {
+  background: linear-gradient(135deg, var(--accent-red-hover) 0%, var(--accent-red) 100%);
+  box-shadow: 0 6px 20px rgba(229, 26, 45, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-post-new svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.my-market-category-section {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 20px 24px 24px;
+}
+
+.my-market-listings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.my-market-listings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#my-market-count-label {
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.my-market-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.my-listing-edit-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.62);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+  backdrop-filter: blur(2px);
+}
+
+.my-listing-edit-overlay svg {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
+}
+
+.my-listing-card:hover .my-listing-edit-overlay {
+  opacity: 1;
+}
+
+.my-listing-status {
+  font-size: 9.5px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.my-listing-status.status-active {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #10B981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.my-listing-status.status-draft {
+  background-color: rgba(245, 158, 11, 0.12);
+  color: #F59E0B;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.my-listing-edit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(229, 26, 45, 0.08);
+  border: 1px solid rgba(229, 26, 45, 0.25);
+  color: var(--accent-red);
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.my-listing-edit-btn:hover {
+  background: rgba(229, 26, 45, 0.15);
+  border-color: var(--accent-red);
+  transform: scale(1.02);
+}
+
+.my-listing-edit-btn svg {
+  width: 11px;
+  height: 11px;
+  fill: currentColor;
+}
+
+.my-market-empty {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 70px 20px;
+  color: var(--text-muted);
+  text-align: center;
+  border: 1px dashed var(--border-color);
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 0.01);
+}
+
+.my-market-empty svg {
+  width: 52px;
+  height: 52px;
+  stroke: currentColor;
+  opacity: 0.35;
+}
+
+.my-market-empty p {
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.create-back-bar {
+  display: flex;
+  align-items: center;
+}
+
+.btn-back-mymarket {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-back-mymarket:hover {
+  border-color: var(--accent-red);
+  color: var(--text-primary);
+}
+
+.btn-back-mymarket svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+/* Toast styling */
+.toast-notification {
+  animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 900px) {
+  .my-market-cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .my-marketplace-area { padding: 16px; }
+  .my-market-topbar { flex-direction: column; align-items: flex-start; }
+  .my-market-cards-grid { grid-template-columns: 1fr; }
+}
+
+

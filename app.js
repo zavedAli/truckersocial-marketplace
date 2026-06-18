@@ -680,11 +680,49 @@ const MOCK_LISTINGS = [
 let appState = {
   currentCategory: "01",
   currentSubcategory: "",
-  currentMode: "browse", // 'browse' or 'create'
+  currentMode: "browse", // 'browse', 'myMarket', 'create', or 'edit'
   filters: {},           // search filters key-value map
   form: {},              // create listing form key-value map
   isSubmitted: false,
-  listingView: "grid"    // 'grid' or 'list'
+  listingView: "grid",   // 'grid' or 'list'
+  editingListingId: null,
+  myMarketCategory: "all",
+  userListings: [
+    {
+      id: "usr-001",
+      categoryId: "01",
+      subcategory: "Sleeper",
+      title: "2018 Peterbilt 579 Sleeper",
+      description: "PACCAR MX-13 engine, manual 13-speed transmission, 72\" high roof sleeper. Excellent fuel economy, single fleet owner, clean title.",
+      price: 52000,
+      condition: "Used",
+      status: "active",
+      location: { state: "TX", zip: "75201", radius: "50" },
+      specs: [
+        { l: "Make", v: "Peterbilt" },
+        { l: "Year", v: "2018" },
+        { l: "Engine Brand", v: "PACCAR" },
+        { l: "Transmission Type", v: "Manual" },
+        { l: "Sleeper Size", v: "72\"+" }
+      ]
+    },
+    {
+      id: "usr-002",
+      categoryId: "04",
+      subcategory: "Tires & Wheels",
+      title: "4x Michelin Truck Tires (295/75R22.5)",
+      description: "Nearly new commercial tires, only used for about 3,500 miles. Excellent remaining tread and no casing damage.",
+      price: 1350,
+      condition: "Used",
+      status: "draft",
+      location: { state: "GA", zip: "30301", radius: "25" },
+      specs: [
+        { l: "Part Category", v: "Tires & Wheels" },
+        { l: "Compatible With", v: "Truck" },
+        { l: "OEM or Aftermarket", v: "OEM" }
+      ]
+    }
+  ]
 };
 
 // 4. Initialization
@@ -735,11 +773,18 @@ function renderCategoriesGrid() {
 function bindStaticEvents() {
   // Mode switch buttons
   document.getElementById("mode-browse").addEventListener("click", () => setMode("browse"));
-  document.getElementById("mode-create").addEventListener("click", () => setMode("create"));
+  document.getElementById("mode-my-market").addEventListener("click", () => setMode("myMarket"));
   
   // Create listing form reset
   window.resetForm = function() {
-    appState.form = {};
+    appState.form = {
+      title: "",
+      price: "",
+      description: "",
+      subcategory: "",
+      location: { state: "TX", zip: "75201", radius: "25" }
+    };
+    appState.currentSubcategory = "";
     appState.isSubmitted = false;
     renderFieldsPanel();
     updateLivePreview();
@@ -751,12 +796,55 @@ function bindStaticEvents() {
     
     // Validate required fields (Title, Price, Subcategory)
     const titleVal = document.getElementById("form-input-title")?.value;
-    const priceVal = document.getElementById("form-input-price")?.value;
+    const priceVal = parseFloat(document.getElementById("form-input-price")?.value);
     const subVal = document.getElementById("form-input-subcategory")?.value;
 
-    if (!titleVal || !priceVal || !subVal) {
+    if (!titleVal || isNaN(priceVal) || !subVal) {
       alert("Please enter a Title, Price, and Subcategory for your listing!");
       return;
+    }
+
+    const cat = CATEGORIES.find(c => c.id === appState.currentCategory);
+    if (!cat) return;
+
+    const isEdit = !!appState.editingListingId;
+    const listingId = isEdit ? appState.editingListingId : "usr-" + Date.now();
+
+    const listingData = {
+      id: listingId,
+      categoryId: appState.currentCategory,
+      subcategory: subVal,
+      title: titleVal,
+      description: document.getElementById("form-input-description")?.value || "",
+      price: priceVal,
+      condition: appState.form.condition || "Used",
+      status: appState.form.status || "active",
+      location: appState.form.location || { state: "TX" },
+      specs: []
+    };
+
+    // Build specs from inputs
+    cat.filters.forEach(f => {
+      if (!["condition", "price", "location", "financing"].includes(f.name)) {
+        const val = appState.form[f.name];
+        if (val) {
+          listingData.specs.push({ l: f.label || capitalizeFirst(f.name), v: Array.isArray(val) ? val.join(", ") : val });
+        }
+      }
+      if (f.name === "financing") {
+        listingData.financing = (appState.form.financing === "yes");
+      }
+    });
+
+    if (isEdit) {
+      const idx = appState.userListings.findIndex(l => l.id === listingId);
+      if (idx !== -1) {
+        appState.userListings[idx] = listingData;
+      }
+      showToast("Listing updated successfully!");
+    } else {
+      appState.userListings.push(listingData);
+      showToast("Listing published successfully!");
     }
 
     appState.isSubmitted = true;
@@ -802,23 +890,33 @@ function setMode(mode) {
   appState.isSubmitted = false;
 
   const browseBtn = document.getElementById("mode-browse");
-  const createBtn = document.getElementById("mode-create");
+  const myMarketBtn = document.getElementById("mode-my-market");
   const browseArea = document.getElementById("browse-area");
   const createArea = document.getElementById("create-mode-area");
+  const myMarketArea = document.getElementById("my-marketplace-area");
   const drawerShell = document.getElementById("filter-drawer-shell");
 
+  // Reset active classes
+  browseBtn?.classList.remove("active");
+  myMarketBtn?.classList.remove("active");
+
+  // Hide all areas
+  if (browseArea) browseArea.style.display = "none";
+  if (createArea) createArea.style.display = "none";
+  if (myMarketArea) myMarketArea.style.display = "none";
+  if (drawerShell) drawerShell.style.display = "none";
+
   if (mode === "browse") {
-    browseBtn.classList.add("active");
-    createBtn.classList.remove("active");
+    browseBtn?.classList.add("active");
     if (browseArea) browseArea.style.display = "flex";
-    if (createArea) createArea.style.display = "none";
     if (drawerShell) drawerShell.style.display = "block";
-  } else {
-    createBtn.classList.add("active");
-    browseBtn.classList.remove("active");
-    if (browseArea) browseArea.style.display = "none";
+  } else if (mode === "myMarket") {
+    myMarketBtn?.classList.add("active");
+    if (myMarketArea) myMarketArea.style.display = "flex";
+    renderMyMarketplace();
+  } else if (mode === "create" || mode === "edit") {
+    myMarketBtn?.classList.add("active");
     if (createArea) createArea.style.display = "block";
-    if (drawerShell) drawerShell.style.display = "none";
   }
 
   renderFieldsPanel();
@@ -871,7 +969,7 @@ window.selectSubcategory = function(subName) {
 
 // 10. Generate and render fields container (Filters or Listing creation)
 function renderFieldsPanel() {
-  // In create mode, render into the create-specific panel
+  // In create/edit mode, render into the create-specific panel
   const panelId = appState.currentMode === "browse" ? "config-panel-container" : "config-panel-create-container";
   const configPanel = document.getElementById(panelId);
   if (!configPanel) return;
@@ -879,45 +977,78 @@ function renderFieldsPanel() {
   const cat = CATEGORIES.find(c => c.id === appState.currentCategory);
   if (!cat) return;
 
-  // If creation mode and successfully submitted, show success message
-  if (appState.currentMode === "create" && appState.isSubmitted) {
+  const isBrowse = appState.currentMode === "browse";
+
+  // If creation/edit mode and successfully submitted, show success message
+  if (!isBrowse && appState.isSubmitted) {
+    const isEdit = !!appState.editingListingId;
     configPanel.innerHTML = `
       <div class="success-screen">
         <div class="success-icon">
           <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
         </div>
-        <div class="success-title">Listing Posted Successfully!</div>
-        <div class="success-msg">Your listing for <strong>${appState.form.title || "Item"}</strong> is now active in the TruckerSocial Marketplace database.</div>
-        <button class="btn btn-primary" onclick="resetForm()">Post Another Listing</button>
+        <div class="success-title">Listing ${isEdit ? 'Updated' : 'Published'} Successfully!</div>
+        <div class="success-msg">Your listing for <strong>${appState.form.title || "Item"}</strong> has been saved.</div>
+        <div style="display: flex; gap: 12px; justify-content: center; margin-top: 16px;">
+          <button class="btn btn-primary" onclick="setMode('myMarket')">Go to My Marketplace</button>
+          <button class="btn btn-secondary" onclick="openPostNewProduct()">Post Another Listing</button>
+        </div>
       </div>
     `;
     return;
   }
 
-  const isBrowse = appState.currentMode === "browse";
-  const title = isBrowse ? `Search & Filter: ${cat.name}` : `Create Listing: ${cat.name}`;
+  const title = isBrowse ? `Search & Filter: ${cat.name}` : (appState.editingListingId ? `Edit Listing: ${cat.name}` : `Create Listing: ${cat.name}`);
   const description = cat.focus;
 
   // Start building form
-  let html = `
-    <div class="config-header">
-      <div class="config-title">${title}</div>
-      <div class="config-desc">${description}</div>
-    </div>
-    <form id="marketplace-form" onsubmit="submitListing(event)">
-      <div class="form-grid">
-  `;
+  let html = "";
+  if (!isBrowse) {
+    html = `
+      <div class="config-header">
+        <div class="config-title">${title}</div>
+        <div class="config-desc">${description}</div>
+      </div>
+      
+      <!-- Parent Category Selector inside form -->
+      <div class="category-section" style="margin-bottom: 24px; padding: 20px; border-radius: 12px; background-color: var(--bg-secondary); border: 1px solid var(--border-color); width: 100%;">
+        <div class="section-header" style="margin-bottom: 16px;">
+          <div>
+            <h3 style="font-family: var(--font-title); font-size: 15px; font-weight: 700;">Select Category <span class="label-note">(Required)</span></h3>
+          </div>
+        </div>
+        <div class="category-grid" id="form-categories-grid" style="grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px;">
+          <!-- Dynamically populated by renderFormCategoriesGrid() -->
+        </div>
+      </div>
 
-  // For CREATE mode, add base listing fields (Title, Description, Price, Image)
+      <form id="marketplace-form" onsubmit="submitListing(event)">
+        <div class="form-grid">
+    `;
+  } else {
+    html = `
+      <div class="config-header">
+        <div class="config-title">${title}</div>
+        <div class="config-desc">${description}</div>
+      </div>
+      <form id="marketplace-form" onsubmit="submitListing(event)">
+        <div class="form-grid">
+    `;
+  }
+
+  // Base list to lookup values from (appState.filters or appState.form)
+  const list = isBrowse ? appState.filters : appState.form;
+
+  // For CREATE/EDIT mode, add base listing fields (Title, Description, Price, Image)
   if (!isBrowse) {
     html += `
       <div class="form-group form-group-full">
         <label for="form-input-title">Listing Title <span class="label-note">(Required)</span></label>
-        <input type="text" id="form-input-title" class="form-control" placeholder="e.g. 2018 Freightliner Cascadia - Low Mileage" oninput="handleFormBaseChange('title', this.value)" required>
+        <input type="text" id="form-input-title" class="form-control" placeholder="e.g. 2018 Freightliner Cascadia - Low Mileage" oninput="handleFormBaseChange('title', this.value)" value="${appState.form.title || ''}" required>
       </div>
       <div class="form-group">
         <label for="form-input-price">Price ($) <span class="label-note">(Required)</span></label>
-        <input type="number" id="form-input-price" class="form-control" placeholder="e.g. 45000" oninput="handleFormBaseChange('price', this.value)" required>
+        <input type="number" id="form-input-price" class="form-control" placeholder="e.g. 45000" oninput="handleFormBaseChange('price', this.value)" value="${appState.form.price || ''}" required>
       </div>
     `;
   }
@@ -928,17 +1059,17 @@ function renderFieldsPanel() {
       <label for="form-input-subcategory">Subcategory <span class="label-note">(Required)</span></label>
       <select id="form-input-subcategory" class="form-control" onchange="selectSubcategory(this.value)" required>
         <option value="">-- Select Subcategory --</option>
-        ${cat.subcategories.map(sub => `<option value="${sub}" ${appState.currentSubcategory === sub ? 'selected' : ''}>${sub}</option>`).join("")}
+        ${cat.subcategories.map(sub => `<option value="${sub}" ${(isBrowse ? appState.currentSubcategory : appState.form.subcategory) === sub ? 'selected' : ''}>${sub}</option>`).join("")}
       </select>
     </div>
   `;
 
-  // For CREATE mode, add Description
+  // For CREATE/EDIT mode, add Description
   if (!isBrowse) {
     html += `
       <div class="form-group form-group-full">
         <label for="form-input-description">Item Description</label>
-        <textarea id="form-input-description" class="form-control" placeholder="Describe your item or service..." oninput="handleFormBaseChange('description', this.value)"></textarea>
+        <textarea id="form-input-description" class="form-control" placeholder="Describe your item or service..." oninput="handleFormBaseChange('description', this.value)">${appState.form.description || ''}</textarea>
       </div>
     `;
   }
@@ -959,10 +1090,12 @@ function renderFieldsPanel() {
         </label>
     `;
 
+    const currentVal = list[field.name];
+
     // Dropdown input type (D)
     if (field.type === "D") {
       let options = field.options || [];
-      // Handle dynamic options (like Real Estate Price Rate varying by Transaction Type)
+      // Handle dynamic options
       if (field.dynamicOptions) {
         options = field.dynamicOptions(appState);
       }
@@ -970,34 +1103,37 @@ function renderFieldsPanel() {
       html += `
         <select class="form-control field-input" id="inp-${field.name}" onchange="handleFieldChange('${field.name}', this.value)">
           <option value="">-- All / Any --</option>
-          ${options.map(opt => `<option value="${opt}">${opt}</option>`).join("")}
+          ${options.map(opt => `<option value="${opt}" ${currentVal === opt ? 'selected' : ''}>${opt}</option>`).join("")}
         </select>
       `;
     }
     // Yes / No button toggles (B)
     else if (field.type === "B") {
+      const yesActive = currentVal === "yes" ? "active" : "";
+      const noActive = currentVal === "no" ? "active" : "";
       html += `
         <div class="yesno-group">
-          <button type="button" class="yesno-btn" data-fieldname="${field.name}" data-val="yes" onclick="setYesNoField('${field.name}', 'yes')">Yes</button>
-          <button type="button" class="yesno-btn" data-fieldname="${field.name}" data-val="no" onclick="setYesNoField('${field.name}', 'no')">No</button>
+          <button type="button" class="yesno-btn ${yesActive}" data-fieldname="${field.name}" data-val="yes" onclick="setYesNoField('${field.name}', 'yes')">Yes</button>
+          <button type="button" class="yesno-btn ${noActive}" data-fieldname="${field.name}" data-val="no" onclick="setYesNoField('${field.name}', 'no')">No</button>
         </div>
       `;
     }
     // Text inputs (T)
     else if (field.type === "T") {
       html += `
-        <input type="text" class="form-control field-input" id="inp-${field.name}" placeholder="Type details..." oninput="handleFieldChange('${field.name}', this.value)">
+        <input type="text" class="form-control field-input" id="inp-${field.name}" placeholder="Type details..." oninput="handleFieldChange('${field.name}', this.value)" value="${currentVal || ''}">
       `;
     }
     // Multi-Select dropdown (M)
     else if (field.type === "M") {
+      const selectedOpts = Array.isArray(currentVal) ? currentVal : [];
       html += `
         <div class="multiselect-container" id="multi-${field.name}">
           <div class="multiselect-trigger" onclick="toggleMultiSelect('${field.name}')">Select options</div>
           <div class="multiselect-dropdown">
             ${field.options.map(opt => `
               <div class="multiselect-option" onclick="toggleMultiOption(event, '${field.name}', '${opt}')">
-                <input type="checkbox" id="chk-${field.name}-${opt}" value="${opt}">
+                <input type="checkbox" id="chk-${field.name}-${opt}" value="${opt}" ${selectedOpts.includes(opt) ? 'checked' : ''}>
                 <span>${opt}</span>
               </div>
             `).join("")}
@@ -1017,7 +1153,7 @@ function renderFieldsPanel() {
         <div class="bracket-range-container">
           <div class="range-brackets-grid" id="bg-${field.name}">
             ${options.map(opt => `
-              <div class="bracket-pill" onclick="selectBracketPill('${field.name}', '${opt}')" data-val="${opt}">${opt}</div>
+              <div class="bracket-pill ${currentVal === opt ? 'active' : ''}" onclick="selectBracketPill('${field.name}', '${opt}')" data-val="${opt}">${opt}</div>
             `).join("")}
           </div>
         </div>
@@ -1027,32 +1163,36 @@ function renderFieldsPanel() {
     else if (field.type === "R_SLIDER") {
       const minVal = field.min || 2010;
       const maxVal = field.max || 2026;
+      const sliderVal = currentVal !== undefined ? currentVal : maxVal;
       html += `
         <div class="slider-control-group">
-          <input type="range" class="range-slider" min="${minVal}" max="${maxVal}" value="${maxVal}" id="inp-${field.name}" oninput="handleSliderChange('${field.name}', this.value)">
-          <div class="slider-val" id="val-${field.name}">${maxVal}</div>
+          <input type="range" class="range-slider" min="${minVal}" max="${maxVal}" value="${sliderVal}" id="inp-${field.name}" oninput="handleSliderChange('${field.name}', this.value)">
+          <div class="slider-val" id="val-${field.name}">${sliderVal}</div>
         </div>
       `;
     }
     // Location Radius fields (Z / Z_RADIUS_ONLY)
     else if (field.type === "Z" || field.type === "Z_RADIUS_ONLY") {
+      const locObj = currentVal || {};
+      const currentState = locObj.state || "";
+      const currentRadius = locObj.radius || "";
       html += `
         <div class="location-combo">
           <select class="form-control" id="inp-loc-state-${field.name}" onchange="handleLocationChange('${field.name}')">
             <option value="">State (Any)</option>
-            <option value="TX">TX (Texas)</option>
-            <option value="CA">CA (California)</option>
-            <option value="FL">FL (Florida)</option>
-            <option value="IL">IL (Illinois)</option>
-            <option value="GA">GA (Georgia)</option>
-            <option value="OH">OH (Ohio)</option>
+            <option value="TX" ${currentState === "TX" ? "selected" : ""}>TX (Texas)</option>
+            <option value="CA" ${currentState === "CA" ? "selected" : ""}>CA (California)</option>
+            <option value="FL" ${currentState === "FL" ? "selected" : ""}>FL (Florida)</option>
+            <option value="IL" ${currentState === "IL" ? "selected" : ""}>IL (Illinois)</option>
+            <option value="GA" ${currentState === "GA" ? "selected" : ""}>GA (Georgia)</option>
+            <option value="OH" ${currentState === "OH" ? "selected" : ""}>OH (Ohio)</option>
           </select>
           <select class="form-control" id="inp-loc-radius-${field.name}" onchange="handleLocationChange('${field.name}')">
             <option value="">Radius</option>
-            <option value="25">25 mi</option>
-            <option value="50">50 mi</option>
-            <option value="100">100 mi</option>
-            <option value="250">250 mi</option>
+            <option value="25" ${currentRadius === "25" ? "selected" : ""}>25 mi</option>
+            <option value="50" ${currentRadius === "50" ? "selected" : ""}>50 mi</option>
+            <option value="100" ${currentRadius === "100" ? "selected" : ""}>100 mi</option>
+            <option value="250" ${currentRadius === "250" ? "selected" : ""}>250 mi</option>
           </select>
         </div>
       `;
@@ -1069,12 +1209,13 @@ function renderFieldsPanel() {
       </div>
     `;
   } else {
+    const isEdit = !!appState.editingListingId;
     html += `
       <div class="form-actions">
         <button type="button" class="btn btn-secondary" onclick="resetForm()">Clear Form</button>
         <button type="submit" class="btn btn-primary">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="white"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-          Publish Listing
+          ${isEdit ? 'Save Changes' : 'Publish Listing'}
         </button>
       </div>
     `;
@@ -1086,6 +1227,18 @@ function renderFieldsPanel() {
   `;
 
   configPanel.innerHTML = html;
+
+  // After setting the HTML, render the category selection grid if not in browse mode
+  if (!isBrowse) {
+    renderFormCategoriesGrid();
+  }
+
+  // Pre-populate multi-select tags
+  cat.filters.forEach(field => {
+    if (field.type === "M") {
+      renderMultiSelectTags(field.name);
+    }
+  });
 }
 
 // 11. Handle base listing field changes (Title, Price, Description in Form)
@@ -1716,6 +1869,281 @@ function applyFilters() {
 function capitalizeFirst(str) {
   return str.charAt(0).toUpperCase() + str.slice(1).replace(/([A-Z])/g, ' $1');
 }
+
+// ========================================================
+// MY MARKETPLACE & FORM FUNCTIONALITY
+// ========================================================
+
+// Render parent category selection grid in Create/Edit form
+function renderFormCategoriesGrid() {
+  const grid = document.getElementById("form-categories-grid");
+  if (!grid) return;
+
+  grid.innerHTML = CATEGORIES.map(cat => {
+    const isActive = appState.currentCategory === cat.id;
+    return `
+      <div class="category-card ${isActive ? 'active' : ''}" id="form-cat-card-${cat.id}" onclick="selectFormCategory('${cat.id}')" style="padding: 10px; min-height: 80px;">
+        <div class="category-icon" style="width: 24px; height: 24px; margin-bottom: 4px;">${CATEGORY_ICONS[cat.id] || ""}</div>
+        <div class="category-name" style="font-size: 11.5px; margin-bottom: 0;">${cat.name}</div>
+      </div>
+    `;
+  }).join("");
+}
+
+// Handle selecting category in the form
+window.selectFormCategory = function(catId) {
+  appState.currentCategory = catId;
+  appState.currentSubcategory = "";
+  
+  // Reset form fields for new category, retaining only basic ones
+  appState.form = {
+    title: appState.form.title || "",
+    price: appState.form.price || "",
+    description: appState.form.description || "",
+    categoryId: catId,
+    location: appState.form.location || { state: "TX", zip: "75201", radius: "25" }
+  };
+  
+  renderFieldsPanel();
+  updateLivePreview();
+};
+
+// Render My Marketplace tab dashboard
+window.renderMyMarketplace = function() {
+  renderMyMarketCategoriesGrid();
+  renderMyMarketListings();
+  updateMyMarketDrawerBadge();
+};
+
+// Toggle My Marketplace Category Drawer
+window.toggleMyMarketDrawer = function() {
+  const shell = document.getElementById("my-market-drawer-shell");
+  if (!shell) return;
+  const isOpen = shell.classList.contains("open");
+  shell.classList.toggle("open");
+  const hint = document.getElementById("my-market-drawer-hint");
+  if (hint) hint.textContent = isOpen ? "Click to expand" : "Click to collapse";
+};
+
+// Update My Marketplace Category Drawer Badge
+function updateMyMarketDrawerBadge() {
+  const badge = document.getElementById("my-market-drawer-badge");
+  if (!badge) return;
+  if (appState.myMarketCategory && appState.myMarketCategory !== "all") {
+    const cat = CATEGORIES.find(c => c.id === appState.myMarketCategory);
+    badge.textContent = cat ? cat.name : "Filtered";
+    badge.style.display = "inline-block";
+  } else {
+    badge.style.display = "none";
+  }
+}
+
+// Render category filters grid in My Marketplace dashboard
+function renderMyMarketCategoriesGrid() {
+  const grid = document.getElementById("my-market-categories-grid");
+  if (!grid) return;
+
+  const allIcon = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>`;
+
+  const allCat = { id: "all", name: "All Categories" };
+  const items = [allCat, ...CATEGORIES];
+
+  grid.innerHTML = items.map(cat => {
+    const isActive = appState.myMarketCategory === cat.id;
+    const iconHtml = cat.id === "all" ? allIcon : (CATEGORY_ICONS[cat.id] || "");
+    const count = cat.id === "all"
+      ? appState.userListings.length
+      : appState.userListings.filter(l => l.categoryId === cat.id).length;
+
+    return `
+      <div class="category-card ${isActive ? 'active' : ''}" onclick="selectMyMarketCategory('${cat.id}')">
+        <div class="category-icon">${iconHtml}</div>
+        <div class="category-name">${cat.name}</div>
+        <div class="category-meta">
+          <span class="meta-badge">${count} Listing${count !== 1 ? 's' : ''}</span>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+// Handle category filter clicks in My Marketplace
+window.selectMyMarketCategory = function(catId) {
+  appState.myMarketCategory = catId;
+  renderMyMarketCategoriesGrid();
+  renderMyMarketListings();
+  updateMyMarketDrawerBadge();
+};
+
+// Render list/grid of user's uploaded listings
+function renderMyMarketListings() {
+  const container = document.getElementById("my-market-listings-container");
+  const countLabel = document.getElementById("my-market-count-label");
+  if (!container) return;
+
+  const filtered = appState.myMarketCategory === "all"
+    ? appState.userListings
+    : appState.userListings.filter(l => l.categoryId === appState.myMarketCategory);
+
+  if (countLabel) {
+    if (appState.myMarketCategory === "all") {
+      countLabel.textContent = `${filtered.length} listing${filtered.length !== 1 ? 's' : ''} · All Categories`;
+    } else {
+      const cat = CATEGORIES.find(c => c.id === appState.myMarketCategory);
+      countLabel.textContent = `${filtered.length} listing${filtered.length !== 1 ? 's' : ''} · ${cat?.name || ""}`;
+    }
+  }
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="my-market-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+        </svg>
+        <p>No listings in this category yet.</p>
+        <button class="btn-post-new" onclick="openPostNewProduct()">
+          <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+          Post Your First Listing
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `<div class="my-market-cards-grid">${filtered.map(item => renderMyListingCard(item)).join("")}</div>`;
+}
+
+// Generate listing card for user dashboard
+function renderMyListingCard(item) {
+  const priceText = item.price > 0
+    ? `$${item.price.toLocaleString()}`
+    : "Contact / Negotiable";
+
+  const catName = CATEGORIES.find(c => c.id === item.categoryId)?.name || "";
+  const statusClass = item.status === "active" ? "status-active" : "status-draft";
+  const statusLabel = item.status === "active" ? "Active" : "Draft";
+  const condClass = item.condition
+    ? (item.condition === "New" ? "" : item.condition === "Rebuilt" ? " rebuilt" : " used")
+    : "";
+
+  return `
+    <div class="mp-card my-listing-card" id="my-listing-card-${item.id}">
+      <div class="mp-card-img">
+        <div class="mp-card-img-inner">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125a1.125 1.125 0 001.125-1.125V9.75M8.25 18.75a1.5 1.5 0 01-3 0m0 0V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25v11.25" />
+          </svg>
+          <span>${catName}</span>
+        </div>
+        <div class="mp-card-badges">
+          <span class="my-listing-status ${statusClass}">${statusLabel}</span>
+          ${item.condition ? `<span class="mp-badge-condition ${condClass}">${item.condition}</span>` : '<span></span>'}
+        </div>
+        <div class="my-listing-edit-overlay" onclick="editListing('${item.id}')">
+          <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+          <span>Click to Edit</span>
+        </div>
+      </div>
+      <div class="mp-card-body">
+        <div class="mp-card-cat">${catName} &bull; ${item.subcategory}</div>
+        <div class="mp-card-title">${item.title}</div>
+        <p class="mp-card-desc">${item.description || ""}</p>
+        <div class="mp-card-footer">
+          <div class="mp-card-price">${priceText}</div>
+          <div class="mp-card-meta">
+            <button class="my-listing-edit-btn" onclick="editListing('${item.id}')">
+              <svg viewBox="0 0 24 24" width="10" height="10"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+              Edit
+            </button>
+            <button class="my-listing-edit-btn" style="background: rgba(229, 26, 45, 0.03); border-color: rgba(255,255,255,0.1); color: var(--text-secondary);" onclick="deleteListing(event, '${item.id}')">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// Redirect to post product form
+window.openPostNewProduct = function() {
+  appState.editingListingId = null;
+  appState.form = {
+    title: "",
+    price: "",
+    description: "",
+    subcategory: "",
+    location: { state: "TX", zip: "75201", radius: "25" }
+  };
+  appState.currentSubcategory = "";
+  if (!CATEGORIES.some(c => c.id === appState.currentCategory)) {
+    appState.currentCategory = "01";
+  }
+  setMode("create");
+};
+
+// Redirect to edit product form pre-populated
+window.editListing = function(id) {
+  const listing = appState.userListings.find(l => l.id === id);
+  if (!listing) return;
+
+  appState.editingListingId = id;
+  appState.currentCategory = listing.categoryId;
+  appState.currentSubcategory = listing.subcategory;
+  appState.form = JSON.parse(JSON.stringify(listing)); // Deep clone to avoid mutating directly
+  
+  setMode("edit");
+};
+
+// Delete user listing
+window.deleteListing = function(e, id) {
+  if (e) e.stopPropagation();
+  if (confirm("Are you sure you want to delete this listing?")) {
+    appState.userListings = appState.userListings.filter(l => l.id !== id);
+    renderMyMarketplace();
+    showToast("Listing deleted successfully!");
+  }
+};
+
+// Return from create/edit forms to user dashboard
+window.backToMyMarketplace = function() {
+  setMode("myMarket");
+};
+
+// Show a success/feedback toast notification
+window.showToast = function(message) {
+  let container = document.getElementById("toast-container");
+  if (!container) {
+    container = document.createElement("div");
+    container.id = "toast-container";
+    container.style.cssText = "position: fixed; bottom: 24px; right: 24px; z-index: 1000; display: flex; flex-direction: column; gap: 10px;";
+    document.body.appendChild(container);
+  }
+
+  const toast = document.createElement("div");
+  toast.className = "toast-notification";
+  toast.style.cssText = "background-color: var(--card-bg); color: var(--text-primary); border-left: 4px solid var(--accent-red); border-top: 1px solid var(--border-color); border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 12px 20px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); font-size: 13.5px; font-weight: 600; min-width: 250px; display: flex; align-items: center; justify-content: space-between; opacity: 0; transform: translateY(20px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);";
+  toast.innerHTML = `
+    <span>${message}</span>
+    <span style="cursor:pointer; margin-left: 10px; color: var(--text-muted);" onclick="this.parentElement.remove()">&times;</span>
+  `;
+  container.appendChild(toast);
+
+  // Trigger animation
+  setTimeout(() => {
+    toast.style.opacity = "1";
+    toast.style.transform = "translateY(0)";
+  }, 10);
+
+  // Fade out and auto-remove
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateY(-20px)";
+    setTimeout(() => {
+      toast.remove();
+    }, 300);
+  }, 4000);
+};
 
 
 
